@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ບັນທືກລູກຄ້າ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans Lao', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-6">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">📋 ລະບົບບັນທືກລູກຄ້າ</h1>
+            <p class="text-gray-600">ຈັດການຂໍ້ມູນລູກຄ້າຂອງເຈົ້າຢ່າງງ່າຍດາຍ</p>
+        </div>
+
+        <!-- Add Customer Form -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                <span class="mr-2">➕</span>ເພີ່ມລູກຄ້າໃໝ່
+            </h2>
+            
+            <form id="customerForm" class="space-y-4">
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">ຊື່ລູກຄ້າ</label>
+                        <input type="text" id="customerName" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                               placeholder="ໃສ່ຊື່ລູກຄ້າ">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">ເບີໂທລະສັບ</label>
+                        <input type="tel" id="customerPhone" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                               placeholder="020 1234 5678">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">ຮູບພາບລູກຄ້າ</label>
+                    <input type="file" id="customerImage" accept="image/*"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    <div id="imagePreview" class="mt-2 hidden">
+                        <img id="previewImg" src="" alt="ຕົວຢ່າງຮູບພາບ" class="w-20 h-20 object-cover rounded-lg border">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">ລາຍລະອຽດເພີ່ມເຕີມ</label>
+                    <textarea id="customerDetails" rows="3"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                           placeholder="ບັນທືກລາຍລະອຽດເພີ່ມເຕີມ ເຊັ່ນ: ທີ່ຢູ່, ຄວາມຕ້ອງການ, ໝາຍເຫດ..."></textarea>
+                </div>
+                
+                <button type="submit" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
+                    <span class="mr-2">💾</span>ບັນທືກລູກຄ້າ
+                </button>
+            </form>
+        </div>
+
+        <!-- Customer List -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center justify-between">
+                <div class="flex items-center">
+                    <span class="mr-2">👥</span>ລາຍຊື່ລູກຄ້າ
+                </div>
+                <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium">
+                    ທັງໝົດ: <span id="customerCount">0</span> ຄົນ
+                </div>
+            </h2>
+            
+            <!-- Search Box -->
+            <div class="mb-6">
+                <div class="relative">
+                    <input type="text" id="searchInput" 
+                           class="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                           placeholder="ຄົ້ນຫາລູກຄ້າ (ຊື່ ຫຼື ເບີໂທ)...">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="text-gray-400">🔍</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="customerList" class="space-y-4">
+                <!-- Customers will be loaded from localStorage -->
+            </div>
+            
+            <div id="emptyState" class="text-center py-8 text-gray-500 hidden">
+                <p class="text-lg">📝 ຍັງບໍ່ມີລູກຄ້າໃນລະບົບ</p>
+                <p>ເພີ່ມລູກຄ້າຄົນທຳອິດຂອງເຈົ້າດ້ານເທິງ!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div class="relative max-w-4xl max-h-screen p-4">
+            <button onclick="closeImageModal()" 
+                    class="absolute top-2 right-2 bg-white rounded-full w-10 h-10 flex items-center justify-center text-gray-600 hover:text-gray-800 z-10">
+                ✕
+            </button>
+            <img id="modalImage" src="" alt="ຮູບລູກຄ້າ" class="max-w-full max-h-full object-contain rounded-lg">
+            <div id="modalCaption" class="text-white text-center mt-4 text-lg font-semibold"></div>
+        </div>
+    </div>
+
+    <script>
+        let editingCustomer = null;
+        let currentImageData = null;
+
+        // Load customers from localStorage on page load
+        function loadCustomers() {
+            const savedCustomers = localStorage.getItem('customers');
+            if (savedCustomers) {
+                const customers = JSON.parse(savedCustomers);
+                const customerList = document.getElementById('customerList');
+                
+                // Clear existing customers
+                customerList.innerHTML = '';
+                
+                customers.forEach(customer => {
+                    addCustomerToDOM(customer.name, customer.phone, customer.details, customer.imageData, customer.id);
+                });
+            }
+            updateEmptyState();
+        }
+
+        // Save customers to localStorage
+        function saveCustomers() {
+            const customerItems = document.querySelectorAll('.customer-item');
+            const customers = [];
+            
+            customerItems.forEach(item => {
+                const name = item.querySelector('h3').textContent;
+                const phone = item.querySelector('p').textContent.replace('📞 ', '');
+                const detailsElement = item.querySelectorAll('p')[1];
+                let details = '';
+                if (detailsElement && detailsElement.textContent.includes('📝')) {
+                    details = detailsElement.textContent.replace('📝 ', '');
+                    if (details === 'ບໍ່ມີລາຍລະອຽດເພີ່ມເຕີມ') {
+                        details = '';
+                    }
+                }
+                const imageData = item.getAttribute('data-image') || '';
+                const id = item.getAttribute('data-id') || Date.now().toString();
+                
+                customers.push({ name, phone, details, imageData, id });
+            });
+            
+            localStorage.setItem('customers', JSON.stringify(customers));
+        }
+
+        // Image preview functionality
+        document.getElementById('customerImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentImageData = e.target.result;
+                    document.getElementById('previewImg').src = currentImageData;
+                    document.getElementById('imagePreview').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                currentImageData = null;
+                document.getElementById('imagePreview').classList.add('hidden');
+            }
+        });
+
+        // Form submission
+        document.getElementById('customerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            const details = document.getElementById('customerDetails').value.trim();
+            
+            if (!name || !phone) {
+                alert('ກະລຸນາໃສ່ຊື່ແລະເບີໂທ');
+                return;
+            }
+            
+            if (editingCustomer) {
+                // Update existing customer
+                updateCustomer(editingCustomer, name, phone, details, currentImageData);
+                editingCustomer = null;
+                document.querySelector('button[type="submit"]').innerHTML = '<span class="mr-2">💾</span>ບັນທືກລູກຄ້າ';
+            } else {
+                // Add new customer
+                addCustomer(name, phone, details, currentImageData);
+            }
+            
+            // Clear form
+            this.reset();
+            currentImageData = null;
+            document.getElementById('imagePreview').classList.add('hidden');
+            updateEmptyState();
+            saveCustomers(); // Save to localStorage
+        });
+
+        function addCustomer(name, phone, details, imageData) {
+            const id = Date.now().toString();
+            addCustomerToDOM(name, phone, details, imageData, id);
+        }
+
+        function addCustomerToDOM(name, phone, details, imageData, id) {
+            const customerList = document.getElementById('customerList');
+            const customerDiv = document.createElement('div');
+            customerDiv.className = 'customer-item bg-gray-50 rounded-lg p-4 border border-gray-200';
+            customerDiv.setAttribute('data-id', id);
+            
+            const detailsHtml = details ? 
+                `<p class="text-gray-500 mt-2 text-sm">📝 ${details}</p>` : 
+                '<p class="text-gray-400 mt-2 text-sm">📝 ບໍ່ມີລາຍລະອຽດເພີ່ມເຕີມ</p>';
+            
+            // Create image or initial avatar
+            let imageHtml;
+            if (imageData) {
+                const escapedImageData = imageData.replace(/'/g, '&#39;');
+                const escapedName = name.replace(/'/g, '&#39;');
+                imageHtml = `<img src="${imageData}" alt="ຮູບລູກຄ້າ" class="w-16 h-16 object-cover rounded-lg border cursor-pointer hover:opacity-80 transition-opacity" onclick="showImageModal('${escapedImageData}', '${escapedName}')">`;
+            } else {
+                const firstLetter = name.charAt(0).toUpperCase();
+                const colors = [
+                    'from-pink-400 to-purple-500',
+                    'from-blue-400 to-green-500',
+                    'from-yellow-400 to-orange-500',
+                    'from-green-400 to-blue-500',
+                    'from-purple-400 to-pink-500',
+                    'from-red-400 to-yellow-500'
+                ];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                imageHtml = `<div class="w-16 h-16 bg-gradient-to-br ${randomColor} rounded-lg flex items-center justify-center text-white text-xl font-bold">${firstLetter}</div>`;
+            }
+            
+            customerDiv.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div class="flex items-start space-x-4 flex-1">
+                        ${imageHtml}
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-800 text-lg">${name}</h3>
+                            <p class="text-gray-600 mt-1">📞 ${phone}</p>
+                            ${detailsHtml}
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="editCustomer(this)" 
+                                class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm transition-colors">
+                            ✏️ ແກ້ໄຂ
+                        </button>
+                        <button onclick="deleteCustomer(this)" 
+                                class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition-colors">
+                            🗑️ ລົບ
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Store image data as a data attribute
+            if (imageData) {
+                customerDiv.setAttribute('data-image', imageData);
+            }
+            
+            customerList.appendChild(customerDiv);
+        }
+
+        function editCustomer(button) {
+            const customerItem = button.closest('.customer-item');
+            const name = customerItem.querySelector('h3').textContent;
+            const phoneElement = customerItem.querySelector('p');
+            const phone = phoneElement.textContent.replace('📞 ', '');
+            
+            // Get details from the third paragraph (details paragraph)
+            const detailsElement = customerItem.querySelectorAll('p')[1]; // Second p element (index 1)
+            let details = '';
+            if (detailsElement && detailsElement.textContent.includes('📝')) {
+                details = detailsElement.textContent.replace('📝 ', '');
+                if (details === 'ບໍ່ມີລາຍລະອຽດເພີ່ມເຕີມ') {
+                    details = '';
+                }
+            }
+            
+            // Get existing image data
+            const existingImageData = customerItem.getAttribute('data-image');
+            if (existingImageData) {
+                currentImageData = existingImageData;
+                document.getElementById('previewImg').src = existingImageData;
+                document.getElementById('imagePreview').classList.remove('hidden');
+            } else {
+                currentImageData = null;
+                document.getElementById('imagePreview').classList.add('hidden');
+            }
+            
+            // Fill form with existing data
+            document.getElementById('customerName').value = name;
+            document.getElementById('customerPhone').value = phone;
+            document.getElementById('customerDetails').value = details;
+            
+            // Change button text
+            document.querySelector('button[type="submit"]').innerHTML = '<span class="mr-2">✏️</span>ອັບເດດລູກຄ້າ';
+            
+            editingCustomer = customerItem;
+            
+            // Scroll to form
+            document.getElementById('customerForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function updateCustomer(customerItem, name, phone, details, imageData) {
+            const detailsHtml = details ? 
+                `<p class="text-gray-500 mt-2 text-sm">📝 ${details}</p>` : 
+                '<p class="text-gray-400 mt-2 text-sm">📝 ບໍ່ມີລາຍລະອຽດເພີ່ມເຕີມ</p>';
+            
+            // Create image or initial avatar
+            let imageHtml;
+            if (imageData) {
+                const escapedImageData = imageData.replace(/'/g, '&#39;');
+                const escapedName = name.replace(/'/g, '&#39;');
+                imageHtml = `<img src="${imageData}" alt="ຮູບລູກຄ້າ" class="w-16 h-16 object-cover rounded-lg border cursor-pointer hover:opacity-80 transition-opacity" onclick="showImageModal('${escapedImageData}', '${escapedName}')">`;
+            } else {
+                const firstLetter = name.charAt(0).toUpperCase();
+                const colors = [
+                    'from-pink-400 to-purple-500',
+                    'from-blue-400 to-green-500',
+                    'from-yellow-400 to-orange-500',
+                    'from-green-400 to-blue-500',
+                    'from-purple-400 to-pink-500',
+                    'from-red-400 to-yellow-500'
+                ];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                imageHtml = `<div class="w-16 h-16 bg-gradient-to-br ${randomColor} rounded-lg flex items-center justify-center text-white text-xl font-bold">${firstLetter}</div>`;
+            }
+            
+            customerItem.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div class="flex items-start space-x-4 flex-1">
+                        ${imageHtml}
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-800 text-lg">${name}</h3>
+                            <p class="text-gray-600 mt-1">📞 ${phone}</p>
+                            ${detailsHtml}
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="editCustomer(this)" 
+                                class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm transition-colors">
+                            ✏️ ແກ້ໄຂ
+                        </button>
+                        <button onclick="deleteCustomer(this)" 
+                                class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition-colors">
+                            🗑️ ລົບ
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Store image data as a data attribute
+            if (imageData) {
+                customerItem.setAttribute('data-image', imageData);
+            } else {
+                customerItem.removeAttribute('data-image');
+            }
+        }
+
+        function deleteCustomer(button) {
+            if (confirm('ເຈົ້າແນ່ໃຈບໍ່ວ່າຕ້ອງການລົບລູກຄ້ານີ້?')) {
+                const customerItem = button.closest('.customer-item');
+                customerItem.remove();
+                updateEmptyState();
+                saveCustomers(); // Save after deletion
+            }
+        }
+
+        function updateEmptyState() {
+            const customerItems = document.querySelectorAll('.customer-item');
+            const emptyState = document.getElementById('emptyState');
+            const customerCount = document.getElementById('customerCount');
+            
+            // Update customer count
+            customerCount.textContent = customerItems.length;
+            
+            if (customerItems.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+            }
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            const customerItems = document.querySelectorAll('.customer-item');
+            let visibleCount = 0;
+            
+            customerItems.forEach(item => {
+                const name = item.querySelector('h3').textContent.toLowerCase();
+                const phone = item.querySelector('p').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || phone.includes(searchTerm)) {
+                    item.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Show/hide empty state based on search results
+            const emptyState = document.getElementById('emptyState');
+            if (visibleCount === 0 && searchTerm !== '') {
+                emptyState.innerHTML = `
+                    <p class="text-lg">🔍 ບໍ່ພົບລູກຄ້າທີ່ຄົ້ນຫາ</p>
+                    <p>ລອງຄົ້ນຫາດ້ວຍຊື່ ຫຼື ເບີໂທອື່ນ</p>
+                `;
+                emptyState.classList.remove('hidden');
+            } else if (visibleCount === 0 && searchTerm === '') {
+                emptyState.innerHTML = `
+                    <p class="text-lg">📝 ຍັງບໍ່ມີລູກຄ້າໃນລະບົບ</p>
+                    <p>ເພີ່ມລູກຄ້າຄົນທຳອິດຂອງເຈົ້າດ້ານເທິງ!</p>
+                `;
+                if (customerItems.length === 0) {
+                    emptyState.classList.remove('hidden');
+                } else {
+                    emptyState.classList.add('hidden');
+                }
+            } else {
+                emptyState.classList.add('hidden');
+            }
+        });
+
+        // Image modal functions
+        function showImageModal(imageSrc, customerName) {
+            document.getElementById('modalImage').src = imageSrc;
+            document.getElementById('modalCaption').textContent = customerName;
+            document.getElementById('imageModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Close modal when clicking outside the image
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeImageModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeImageModal();
+            }
+        });
+
+        // Initialize - Load customers when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCustomers();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'985c20c7019adda2',t:'MTc1ODk4NzkyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+    
+  </body>
+  
+</html>
